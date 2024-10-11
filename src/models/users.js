@@ -37,6 +37,15 @@ export default class users extends Model {
     },
     role: {
       type: DataTypes.STRING(50),
+      allowNull: true,
+      defaultValue: "user"
+    },
+    refresh_token: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    avatar: {
+      type: DataTypes.STRING(255),
       allowNull: true
     }
   }, {
