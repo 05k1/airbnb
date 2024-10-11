@@ -4,12 +4,24 @@ import { httpCode } from "../configs/constant.js";
 import bcrypt from "bcrypt";
 
 import { createAccessToken, createRefreshToken } from "../configs/jwt.js";
+import userRegisterSchema from "../dtos/auth/register.dto.js";
+import userLoginSchema from "../dtos/auth/login.dto.js";
 
 const model = initModels(sequelize);
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    // validate data
+    const { error, value } = userRegisterSchema.validate(req.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      return res
+        .status(httpCode.BAD_REQUEST)
+        .json({ message: "Validation errors", errors: errorMessages });
+    }
+    const { name, email, password } = value;
     const existUser = await model.users.findOne({
       where: {
         email,
@@ -38,7 +50,16 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { error, value } = userLoginSchema.validate(req.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      return res
+        .status(httpCode.BAD_REQUEST)
+        .json({ message: "Validation errors", errors: errorMessages });
+    }
+    const { email, password } = value;
     const user = await model.users.findOne({
       where: {
         email,
