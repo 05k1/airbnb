@@ -13,7 +13,9 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  allowedFormats: ["jpg", "png"],
+  // allowedFormats: ["jpg", "png"],
+  allowedFormats: ["jpg", "png", "webp"], // Cho phép cả webp
+  // transformation: [{ format: "jpg" }], // Chuyển đổi tất cả tệp thành jpg
   params: {
     folder: "airbnb",
   },
