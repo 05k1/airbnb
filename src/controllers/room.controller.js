@@ -1,7 +1,7 @@
 import initModels from "../models/init-models.js";
 import sequelize from "../models/connect.js";
 import { httpCode } from "../configs/constant.js";
-import { Op, where } from "sequelize";
+import { Op } from "sequelize";
 import { getPublicIdFromUrl } from "../configs/configImage.js";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -18,9 +18,7 @@ const createRoom = async (req, res) => {
       description,
       price_per_night,
     } = req.body;
-    const anh = req.file;
-    console.log(anh);
-    let image = req.file.path;
+    let image = req.file;
     if (!image) {
       return res
         .status(httpCode.NOT_FOUND)
@@ -34,7 +32,7 @@ const createRoom = async (req, res) => {
       bathrooms,
       description,
       price_per_night,
-      image_url: image,
+      image_url: image.path,
     });
     return res
       .status(httpCode.CREATED)
@@ -64,7 +62,10 @@ const searchPage = async (req, res) => {
     size = parseInt(size);
     const offset = (page - 1) * size;
 
-    if (isNaN(page) || isNaN(size)) {
+    if (isNaN(page) && page <= 0) {
+      return res.status(httpCode.BAD_REQUEST);
+    }
+    if (isNaN(size) && size <= 0) {
       return res.status(httpCode.BAD_REQUEST);
     }
     const data = await model.rooms.findAll({
