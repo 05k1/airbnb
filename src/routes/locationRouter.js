@@ -13,20 +13,20 @@ import {
 const locationRoutes = express.Router();
 
 locationRoutes.post(
-  "/create-location",
+  "/",
   authMiddleware,
   uploadCloud.single("image"),
   createLocation
 );
-locationRoutes.get("/get-location", getLocation);
-locationRoutes.get("/get-location-by-id/:id", getLocationById);
+locationRoutes.get("/", getLocation);
+locationRoutes.get("/:id", getLocationById);
 locationRoutes.get("/search-pagination", searchPagination);
 locationRoutes.put(
-  "/update-location/:id",
+  "/:id",
   authMiddleware,
   uploadCloud.single("image"),
   updateLocation
 );
-locationRoutes.delete("/delete-location/:id", authMiddleware, deleteLocation);
+locationRoutes.delete("/:id", authMiddleware, deleteLocation);
 
 export default locationRoutes;

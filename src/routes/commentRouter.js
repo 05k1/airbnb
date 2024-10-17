@@ -9,10 +9,10 @@ import {
 
 const commentRoutes = express.Router();
 
-commentRoutes.post("/create-comment", createComment);
-commentRoutes.get("/get-comment", getComment);
-commentRoutes.put("/update-comment/:id", updateComment);
-commentRoutes.delete("/delete-comment/:id", deleteComment);
-commentRoutes.get("/get-comment-by-id/:id", getCommentById);
+commentRoutes.post("/", createComment);
+commentRoutes.get("/", getComment);
+commentRoutes.put("/:id", updateComment);
+commentRoutes.delete("/:id", deleteComment);
+commentRoutes.get("/:id", getCommentById);
 
 export default commentRoutes;
